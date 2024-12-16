@@ -5,22 +5,28 @@ SRCS =	ft_printf.c \
 cc = cc
 FLAGS = -Wall -Wextra -Werror
 HEADER = ft_printf.h
-OBJS = $(SRCS:.c=.o)
+OBJS = $(addprefix $(DIR_OBJS)/, $(SRCS:.c=.o))
+DIR_OBJS = .objs
 NAME = libftprintf.a
 
-%.o: %.c $(HEADER) Makefile
-	$(CC) $(FLAGS) -c $< -o $@
+$(DIR_OBJS)/%.o: %.c $(HEADER) Makefile
+	@mkdir -p $(DIR_OBJS)
+	@$(CC) $(FLAGS) -c $< -o $@
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	ar rcs $(NAME) $(OBJS)
+	@echo "\033[32m scrs compiled \033[0m"
+	@ar rcs $(NAME) $(OBJS)
+	@echo "\033[32m lib created \033[0m"
 
 clean:
-	rm -f $(OBJS)
+	@rm -f $(OBJS)
+	@echo "\033[0;31m objs removed \033[0m"
 
 fclean: clean;
-	rm -f $(NAME)
+	@rm -f $(NAME)
+	@echo "\033[0;31m lib removed \033[0m"
 
 re: fclean all
 

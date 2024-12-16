@@ -22,6 +22,7 @@ $(NAME): $(OBJS)
 
 clean:
 	@rm -f $(OBJS)
+	@rm -rf $(DIR_OBJS)
 	@echo "\033[0;31m objs removed \033[0m"
 
 fclean: clean;

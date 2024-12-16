@@ -6,7 +6,7 @@
 /*   By: dedme <dedme@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 18:23:32 by dedme             #+#    #+#             */
-/*   Updated: 2024/12/15 13:49:48 by dedme            ###   ########.fr       */
+/*   Updated: 2024/12/16 14:59:42 by dedme            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int	ft_putnbr(int nb)
 	nbr = nb;
 	if (nb < 0)
 	{
-		ft_putchar(45);
+		if (ft_putchar(45) == -1)
+			return (-1);
 		nbr = nb * -1 + (v++) * 0;
 	}
 	else if (nb == 0)
@@ -34,7 +35,8 @@ int	ft_putnbr(int nb)
 		nbr = nbr / 10;
 	}
 	while (nb >= 0)
-		ft_putchar(tab[nb-- + (nbr++ *0)] + 48);
+		if (ft_putchar(tab[nb-- + (nbr++ *0)] + 48) == -1)
+			return (-1);
 	return (nbr + v);
 }
 
@@ -53,7 +55,8 @@ int	ft_putnbr2(int nb)
 		nbr = nbr / 10;
 	}
 	while (nb >= 0)
-		ft_putchar(tab[nb-- + (nbr++ *0)] + 48);
+		if (ft_putchar(tab[nb-- + (nbr++ *0)] + 48) == -1)
+			return (-1);
 	return (nbr);
 }
 
@@ -75,7 +78,8 @@ int	ft_putnbr_base(int nbr, char *base)
 			tab[++nbr] = nb % 16;
 			nb = nb / 16;
 			while (nbr >= 0 && nb <= 0)
-				ft_putchar(base[tab[nbr-- + (i++ *0)]]);
+				if (ft_putchar(base[tab[nbr-- + (i++ *0)]]) == -1)
+					return (-1);
 		}
 	}
 	return (i);
@@ -83,7 +87,7 @@ int	ft_putnbr_base(int nbr, char *base)
 
 int	ft_putnbr_base2(unsigned long nbr, char *base)
 {
-	int				tab[100];
+	int				tab[15];
 	unsigned long	nb;
 	int				i;
 	int				j;
@@ -99,7 +103,8 @@ int	ft_putnbr_base2(unsigned long nbr, char *base)
 		j++;
 		nb = nb / 16;
 		while (j > 0 && nb == 0)
-			ft_putchar(base[tab[--j + (i++) * 0]]);
+			if (ft_putchar(base[tab[--j + (i++) * 0]]) == -1)
+				return (-1);
 	}
 	return (i);
 }
@@ -108,12 +113,19 @@ int	ft_puthex(void *str)
 {
 	unsigned long	nb;
 	int				len;
+	int				len2;
 
 	if (!str)
 		return (ft_putstr("(nil)"));
 	len = 0;
+	len2 = 0;
 	nb = (unsigned long)str;
-	len = ft_putstr("0x");
-	len += ft_putnbr_base2(nb, "0123456789abcdef");
-	return (len);
+	if (ft_putstr("0x") == -1)
+		return (-1);
+	if (len == -1)
+		return (-1);
+	len2 = ft_putnbr_base2(nb, "0123456789abcdef");
+	if (len2 == -1)
+		return (-1);
+	return (len + len2 + 2);
 }

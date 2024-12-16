@@ -6,7 +6,7 @@
 /*   By: dedme <dedme@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 14:29:07 by dedme             #+#    #+#             */
-/*   Updated: 2024/12/15 13:50:22 by dedme            ###   ########.fr       */
+/*   Updated: 2024/12/16 14:55:48 by dedme            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,25 @@ int	ft_printf(const char *str, ...)
 	va_list	args;
 	int		i;
 	int		len;
+	int		tmp;
 
+	tmp = 0;
 	len = 0;
-	i = 0;
+	i = -1;
 	if (!str)
 		return (-1);
 	va_start(args, str);
-	while (str[i])
+	while (str[++i])
 	{
 		if (str[i] == '%' && str[i + 1])
-			len += ft_puttype(&str[i++], args);
-		else
 		{
-			ft_putchar(str[i]);
-			len++;
+			tmp = ft_puttype(&str[i++], args);
+			if (tmp == -1)
+				return (-1);
+			len += tmp;
 		}
-		i++;
+		else
+			ft_putchar(str[i] + (len++) * 0);
 	}
 	va_end(args);
 	return (len);
